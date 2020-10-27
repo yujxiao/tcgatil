@@ -277,6 +277,10 @@ tilmap.calcTILfun=function(){
     var h='' 
     //h += '<p><span id="hideRGBbuttons" style="color:blue;cursor:hand;font-size:small">RGB[+] </span>'
     h += '<p> '
+
+    //test
+    h += '<script>tilmap.from2D(tilmap.imSlice(0))</script>'
+
     h += '<span id="hideRGBbuttons" style="color:blue;cursor:hand;font-size:small">RGB[+] </span>'
         h += '<span id="rgbButtons" hidden=true>'
             h += '<button id="calcTILred" style="background-color:silver"> Lymph prob. </button> '
