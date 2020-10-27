@@ -406,8 +406,21 @@ tilmap.calcTILfun=function(){
         tilmap.imgDataB=tilmap.imSlice(2)
         //tilmap.imgDataB_count=tilmap.imgDataB.map(x=>x.map(x=>x/255)).map(x=>x.reduce((a,b)=>a+b)).reduce((a,b)=>a+b)
         tilmap.imgDataB_count=tilmap.imgDataB.map(x=>x.map(x=>(x>0))).map(x=>x.reduce((a,b)=>a+b)).reduce((a,b)=>a+b)
-        calcTILred.onclick=function(){tilmap.from2D(tilmap.imSlice(0))}
-        calcTILgreen.onclick=function(){tilmap.from2D(tilmap.imSlice(1))}
+        //calcTILred.onclick=function(){tilmap.from2D(tilmap.imSlice(0))}
+        tilmap.from2D(tilmap.imSlice(0))
+
+        tilmap.cvBase.hidden=true
+        tilmap.cvBase.width=tilmap.img.width
+        tilmap.cvBase.height=tilmap.img.height
+        tileSize.textContent=`${tilmap.img.width}x${tilmap.img.height}`
+        tilmap.cvBase.id="cvBase"
+        tilmap.img.parentElement.appendChild(tilmap.cvBase)
+        tilmap.ctx=tilmap.cvBase.getContext('2d');
+        tilmap.ctx.drawImage(this,0,0);
+        tilmap.imgData=jmat.imread(tilmap.cvBase);
+
+        //calcTILgreen.onclick=function(){tilmap.from2D(tilmap.imSlice(1))}
+        tilmap.from2D(tilmap.imSlice(1))
         //calcTILblue.onclick=function(){tilmap.from2D(tilmap.imSlice(2))}
         calcTILblue.onclick=function(){
             let dd = tilmap.imSlice(2)
