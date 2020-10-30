@@ -8,6 +8,7 @@ tilmap=function(){
         tilmap.homeUI()
         tilmap.ui()
         // make sure first image is onloaded
+        
         function firstLoad(){
             if(!document.getElementById('calcTILblue')){
                 console.log('1st Load at '+Date())
@@ -205,7 +206,7 @@ tilmap.index=function(x){
 
 tilmap.showTIL=function(){ // get image and display it
     var url='PNGs/'+tilmap.selTumorType.value+'/'+tilmap.selTumorTissue.value
-    var h='<div><img id="imgTIL" src='+url+'></div><div><a href="'+url+'" target="_blank">'+url+'</a></div>'
+    //var h='<div><img id="imgTIL" src='+url+'></div><div><a href="'+url+'" target="_blank">'+url+'</a></div>'
 
     var h = '<div id="imgTILDiv"><img id="imgTIL" src="'+url+'"></div><a href="'+url+'" target="_blank" style="font-size:small">'+url+'</a></div><div id="calcTIL">...</div>'
     tilmap.tilShowImgDiv.innerHTML=h
@@ -277,10 +278,6 @@ tilmap.calcTILfun=function(){
     var h='' 
     //h += '<p><span id="hideRGBbuttons" style="color:blue;cursor:hand;font-size:small">RGB[+] </span>'
     h += '<p> '
-
-    //test
-    h += '<script>tilmap.from2D(tilmap.imSlice(0))</script>'
-
     h += '<span id="hideRGBbuttons" style="color:blue;cursor:hand;font-size:small">RGB[+] </span>'
         h += '<span id="rgbButtons" hidden=true>'
             h += '<button id="calcTILred" style="background-color:silver"> Lymph prob. </button> '
@@ -395,7 +392,10 @@ tilmap.calcTILfun=function(){
     tilmap.img.onload=function(){
         tilmap.cvBase=document.createElement('canvas');
         //tilmap.cvBase.onclick=tilmap.img.onclick
-        tilmap.cvBase.hidden=true
+        
+        tilmap.cvBase.hidden=false
+        tilmap.img.hidden=true
+        
         tilmap.cvBase.width=tilmap.img.width
         tilmap.cvBase.height=tilmap.img.height
         tileSize.textContent=`${tilmap.img.width}x${tilmap.img.height}`
