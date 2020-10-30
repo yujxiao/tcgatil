@@ -419,8 +419,8 @@ tilmap.calcTILfun=function(){
         tilmap.cvBase1.height=tilmap.img.height
         tilmap.cvBase0.id="cvBase1"
         tilmap.img.parentElement.appendChild(tilmap.cvBase1)
-        //tilmap.ctx=tilmap.cvBase1.getContext('2d');
-        //tilmap.ctx.drawImage(this,0,0);
+        tilmap.ctx=tilmap.cvBase1.getContext('2d');
+        tilmap.ctx.drawImage(this,0,0);
         tilmap.from2D(tilmap.imSlice(1))
         
         tilmap.cvBase2=document.createElement('canvas');
