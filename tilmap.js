@@ -408,6 +408,10 @@ tilmap.calcTILfun=function(){
         //tilmap.imgDataB_count=tilmap.imgDataB.map(x=>x.map(x=>x/255)).map(x=>x.reduce((a,b)=>a+b)).reduce((a,b)=>a+b)
         tilmap.imgDataB_count=tilmap.imgDataB.map(x=>x.map(x=>(x>0))).map(x=>x.reduce((a,b)=>a+b)).reduce((a,b)=>a+b)
         
+        title1 = document.createElement('p');
+        title1.innerHTML = '<p>Original</p>';
+        tilmap.img.parentElement.appendChild(title1)
+
         tilmap.cvBase=document.createElement('canvas');
         //tilmap.cvBase.onclick=tilmap.img.onclick
         tilmap.cvBase.hidden=false
