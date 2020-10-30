@@ -410,7 +410,7 @@ tilmap.calcTILfun=function(){
         //tilmap.imgDataB_count=tilmap.imgDataB.map(x=>x.map(x=>x/255)).map(x=>x.reduce((a,b)=>a+b)).reduce((a,b)=>a+b)
         tilmap.imgDataB_count=tilmap.imgDataB.map(x=>x.map(x=>(x>0))).map(x=>x.reduce((a,b)=>a+b)).reduce((a,b)=>a+b)
         tilmap.from2D(tilmap.imSlice(0))
-        
+        /*
         tilmap.cvBase1=document.createElement('canvas');
         //tilmap.cvBase.onclick=tilmap.img.onclick
         tilmap.cvBase1.hidden=false
@@ -425,7 +425,7 @@ tilmap.calcTILfun=function(){
         tilmap.ctx.drawImage(this,0,0);
         tilmap.imgData=jmat.imread(tilmap.cvBase1);
         tilmap.from2D(tilmap.imSlice(1))
-
+        */
 
 
         calcTILred.onclick=function(){tilmap.from2D(tilmap.imSlice(0))}
