@@ -8,7 +8,6 @@ tilmap=function(){
         tilmap.homeUI()
         tilmap.ui()
         // make sure first image is onloaded
-        
         function firstLoad(){
             if(!document.getElementById('calcTILblue')){
                 console.log('1st Load at '+Date())
@@ -206,7 +205,7 @@ tilmap.index=function(x){
 
 tilmap.showTIL=function(){ // get image and display it
     var url='PNGs/'+tilmap.selTumorType.value+'/'+tilmap.selTumorTissue.value
-    //var h='<div><img id="imgTIL" src='+url+'></div><div><a href="'+url+'" target="_blank">'+url+'</a></div>'
+    var h='<div><img id="imgTIL" src='+url+'></div><div><a href="'+url+'" target="_blank">'+url+'</a></div>'
 
     var h = '<div id="imgTILDiv"><img id="imgTIL" src="'+url+'"></div><a href="'+url+'" target="_blank" style="font-size:small">'+url+'</a></div><div id="calcTIL">...</div>'
     tilmap.tilShowImgDiv.innerHTML=h
@@ -390,48 +389,47 @@ tilmap.calcTILfun=function(){
     // read the image data
     tilmap.img = tilmap.div.querySelector('#imgTIL')
     tilmap.img.onload=function(){
+
         tilmap.cvBase0=document.createElement('canvas');
         //tilmap.cvBase.onclick=tilmap.img.onclick
-        
         tilmap.cvBase0.hidden=false
-        tilmap.img.hidden=true
+        tilmap.img.hidden = true
 
         tilmap.cvBase0.width=tilmap.img.width
         tilmap.cvBase0.height=tilmap.img.height
         tileSize.textContent=`${tilmap.img.width}x${tilmap.img.height}`
         tilmap.cvBase0.id="cvBase0"
         tilmap.img.parentElement.appendChild(tilmap.cvBase0)
-        tilmap.ctx=tilmap.cvBase.getContext('2d');
+        tilmap.ctx=tilmap.cvBase0.getContext('2d');
         tilmap.ctx.drawImage(this,0,0);
-        tilmap.imgData=jmat.imread(tilmap.cvBase);
+        tilmap.imgData=jmat.imread(tilmap.cvBase0);
         // extract RGB
         tilmap.imgDataR=tilmap.imSlice(0)
         tilmap.imgDataG=tilmap.imSlice(1)
         tilmap.imgDataB=tilmap.imSlice(2)
         //tilmap.imgDataB_count=tilmap.imgDataB.map(x=>x.map(x=>x/255)).map(x=>x.reduce((a,b)=>a+b)).reduce((a,b)=>a+b)
         tilmap.imgDataB_count=tilmap.imgDataB.map(x=>x.map(x=>(x>0))).map(x=>x.reduce((a,b)=>a+b)).reduce((a,b)=>a+b)
-        //calcTILred.onclick=function(){tilmap.from2D(tilmap.imSlice(0))}
         tilmap.from2D(tilmap.imSlice(0))
-
-
+        
         tilmap.cvBase1=document.createElement('canvas');
         //tilmap.cvBase.onclick=tilmap.img.onclick
-        
         tilmap.cvBase1.hidden=false
-        tilmap.img.hidden=true
+        tilmap.img.hidden = true
 
         tilmap.cvBase1.width=tilmap.img.width
         tilmap.cvBase1.height=tilmap.img.height
         tileSize.textContent=`${tilmap.img.width}x${tilmap.img.height}`
         tilmap.cvBase0.id="cvBase1"
         tilmap.img.parentElement.appendChild(tilmap.cvBase1)
-        
-        //tilmap.imgDataB_count=tilmap.imgDataB.map(x=>x.map(x=>x/255)).map(x=>x.reduce((a,b)=>a+b)).reduce((a,b)=>a+b)
-        tilmap.imgDataB_count=tilmap.imgDataB.map(x=>x.map(x=>(x>0))).map(x=>x.reduce((a,b)=>a+b)).reduce((a,b)=>a+b)
-        //calcTILred.onclick=function(){tilmap.from2D(tilmap.imSlice(0))}
+        tilmap.ctx=tilmap.cvBase1.getContext('2d');
+        tilmap.ctx.drawImage(this,0,0);
+        tilmap.imgData=jmat.imread(tilmap.cvBase1);
         tilmap.from2D(tilmap.imSlice(1))
 
-        
+
+
+        calcTILred.onclick=function(){tilmap.from2D(tilmap.imSlice(0))}
+        calcTILgreen.onclick=function(){tilmap.from2D(tilmap.imSlice(1))}
         //calcTILblue.onclick=function(){tilmap.from2D(tilmap.imSlice(2))}
         calcTILblue.onclick=function(){
             let dd = tilmap.imSlice(2)
