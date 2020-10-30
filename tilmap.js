@@ -410,23 +410,67 @@ tilmap.calcTILfun=function(){
         //tilmap.imgDataB_count=tilmap.imgDataB.map(x=>x.map(x=>x/255)).map(x=>x.reduce((a,b)=>a+b)).reduce((a,b)=>a+b)
         tilmap.imgDataB_count=tilmap.imgDataB.map(x=>x.map(x=>(x>0))).map(x=>x.reduce((a,b)=>a+b)).reduce((a,b)=>a+b)
         tilmap.from2D(tilmap.imSlice(0))
-        /*
+        
         tilmap.cvBase1=document.createElement('canvas');
         //tilmap.cvBase.onclick=tilmap.img.onclick
         tilmap.cvBase1.hidden=false
         tilmap.img.hidden = true
-
         tilmap.cvBase1.width=tilmap.img.width
         tilmap.cvBase1.height=tilmap.img.height
-        tileSize.textContent=`${tilmap.img.width}x${tilmap.img.height}`
         tilmap.cvBase0.id="cvBase1"
         tilmap.img.parentElement.appendChild(tilmap.cvBase1)
-        tilmap.ctx=tilmap.cvBase1.getContext('2d');
-        tilmap.ctx.drawImage(this,0,0);
-        tilmap.imgData=jmat.imread(tilmap.cvBase1);
+        //tilmap.ctx=tilmap.cvBase1.getContext('2d');
+        //tilmap.ctx.drawImage(this,0,0);
         tilmap.from2D(tilmap.imSlice(1))
-        */
-
+        
+        tilmap.cvBase2=document.createElement('canvas');
+        //tilmap.cvBase.onclick=tilmap.img.onclick
+        tilmap.cvBase2.hidden=false
+        tilmap.img.hidden = true
+        tilmap.cvBase2.width=tilmap.img.width
+        tilmap.cvBase2.height=tilmap.img.height
+        tilmap.cvBase2.id="cvBase2"
+        tilmap.img.parentElement.appendChild(tilmap.cvBase2)
+        tilmap.ctx=tilmap.cvBase2.getContext('2d');
+        tilmap.ctx.drawImage(this,0,0);
+        let dd = tilmap.imSlice(2)
+        // tilmap.from2D(dd) <-- this is the base function we are expanding here to represent extracted classifications
+        tilmap.cvBase.hidden=false
+        tilmap.img.hidden=true
+        tilmap.cv2D=dd // keeping current value 2D slice
+        var cm=jmat.colormap()
+        var k = 63/255 // png values are between 0-255 and cm 0-63
+        // extract classifications
+        // channel B storing 5 codes:
+        // 255:[tissue, no cancer, no til]
+        // 254:[tissue + cancer + no til]
+        // 253:[tissue + no cancer + til]
+        // 252:[tissue + cancer + til]
+        // 0:[no tissue]
+        var ddd = dd.map(function(d){
+            return d.map(function(v){
+                let rgba
+                switch(v){
+                    case 255: // [tissue + cancer + no til]
+                        rgba = [192,192,192,255]
+                        break;
+                    case 254: // [tissue + cancer + no til]
+                        rgba = [255,255,0,255]
+                        break;
+                    case 253: // [tissue + no cancer + til]
+                        rgba = [255,0,0,255]
+                        break;
+                    case 252: // [tissue + cancer + til]
+                        rgba = [255,165,0,255]
+                        break;
+                    default:
+                        rgba = [0,0,0,0] // notice transparency 
+                        //rgba = cm[Math.round(v*k)].map(x=>Math.round(x*255)).concat(255)
+                }
+                return rgba
+            })
+        })
+        jmat.imwrite(tilmap.cvBase,ddd)
 
         calcTILred.onclick=function(){tilmap.from2D(tilmap.imSlice(0))}
         calcTILgreen.onclick=function(){tilmap.from2D(tilmap.imSlice(1))}
