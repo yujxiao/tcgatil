@@ -256,6 +256,7 @@ tilmap.showTIL=function(){ // get image and display it
 
 tilmap.zoom2loc=function(){ // event listener pointing to zoom2loc's code
     imgTILDiv.onclick=function(ev){
+
     //tilmap.img.onclick=function(ev){
         if(typeof(zoom2loc)=="undefined"){
             var s=document.createElement('script')
