@@ -54,7 +54,7 @@ tilmap.ui=function(div){
         url='https://quip1.bmi.stonybrook.edu:8443/camicroscope/osdCamicroscope.php?tissueId='+tilmap.selTumorTissue.value.replace('.png','')
     }
     */
-    h+='<div id="tilShowImgDiv"></div></td><td style="vertical-align:top"><iframe id="caMicrocopeIfr" width="800px" height="800px"></td></tr></table>'
+    h+='<div id="tilShowImgDiv"></div></td><td style="vertical-align:top"><iframe id="caMicrocopeIfr" width="800px" height="800px" style="position:fixed;"></td></tr></table>'
     div.innerHTML=h
     tilmap.selTumorType=div.querySelector('#selTumorType')
     tilmap.selTumorTissue=div.querySelector('#selTumorTissue')
