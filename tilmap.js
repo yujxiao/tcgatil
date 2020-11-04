@@ -44,6 +44,7 @@ tilmap.parms={ // starting defaults
 
 tilmap.ui=function(div){
     div=div||tilmap.div // default div
+    
     h='<table><tr><td style="vertical-align:top"><h3 style="color:maroon">Til Maps <span id="slideLink" style="color:blue;font-size:small;cursor:pointer">Link</span></h3>'
     h+='<p style="font-size:small">The interactive panel on the left is a synthetic image assembled with the deeplearned classifications of individual patches from the full image, on the right. The YouTube link above demonstrates the interactive operation.</p>'
     h+='<br><input id="searchInput" value="search" style="color:gray"> <span id="searchResults" style="font-size:small">...</span>'
@@ -54,7 +55,10 @@ tilmap.ui=function(div){
         url='https://quip1.bmi.stonybrook.edu:8443/camicroscope/osdCamicroscope.php?tissueId='+tilmap.selTumorTissue.value.replace('.png','')
     }
     */
-    h+='<div id="tilShowImgDiv"></div></td><td style="vertical-align:top"><iframe id="caMicrocopeIfr" width="700px" height="650px" style="position:sticky;top:0;left:650"></td></tr></table>'
+
+    h+='<div id="tilShowImgDiv"></div></td><td style="vertical-align:top"><iframe id="caMicrocopeIfr" width="700" height="650px" style="position:fixed; top:0;left:650;"></td></tr></div></table>'
+
+    
     div.innerHTML=h
     tilmap.selTumorType=div.querySelector('#selTumorType')
     tilmap.selTumorTissue=div.querySelector('#selTumorTissue')
@@ -254,9 +258,30 @@ tilmap.showTIL=function(){ // get image and display it
     
 }
 
+
+function drawfoc(){
+    w = document.createElement("canvas");
+    ctx = w.getContext("2d");
+    
+    m = document.getElementById("caMicrocopeIfr");
+    var box = m.getBoundingClientRect()
+
+    l = (box.left + box.right) / 2;
+    t = (box.top + box.bottom) / 2;
+
+    ctx.clearRect(0,0,100,100);
+
+    w.style="position:fixed;border:5px solid yellow;width:100px;height:100px;z-index:999999";
+    w.style.top = t-40;
+    w.style.left = l-50;
+    tilmap.img.parentElement.appendChild(w);
+}
+
+
+
+
 tilmap.zoom2loc=function(){ // event listener pointing to zoom2loc's code
     imgTILDiv.onclick=function(ev){
-
     //tilmap.img.onclick=function(ev){
         if(typeof(zoom2loc)=="undefined"){
             var s=document.createElement('script')
@@ -269,7 +294,9 @@ tilmap.zoom2loc=function(){ // event listener pointing to zoom2loc's code
             s.onload=function(){zoom2loc(ev)}
             document.head.appendChild(s)
         }else{zoom2loc(ev)}
+    drawfoc()
     }
+
     return tilmap.calcTILdiv
 }
 
@@ -278,8 +305,8 @@ tilmap.calcTILfun=function(){
     var h='' 
     //h += '<p><span id="hideRGBbuttons" style="color:blue;cursor:hand;font-size:small">RGB[+] </span>'
     h += '<p> '
-    h += '<span id="hideRGBbuttons" style="color:blue;cursor:hand;font-size:small">RGB[+] </span>'
-        h += '<span id="rgbButtons" hidden=true>'
+    //h += '<span id="hideRGBbuttons" style="color:blue;cursor:hand;font-size:small">RGB[+] </span>'
+        //h += '<span id="rgbButtons" hidden=true>'
             h += '<button id="calcTILred" style="background-color:silver"> Lymph prob. </button> '
             h += '<span> <button id="calcTILgreen" style="background-color:silver"> Cancer prob. </button></span> '
             //h += '<span> </span> '
@@ -289,7 +316,6 @@ tilmap.calcTILfun=function(){
     h += '<button id="calcTILblue" style="background-color:silver;color:black;font-weight:bold"> Classification </button>&nbsp;<span style="font-size:small;background-color:gray;color:white">&nbsp;T&nbsp;</span><span style="font-size:small;background-color:yellow;color:black">&nbsp;C&nbsp;</span><span style="font-size:small;background-color:red;color:black">&nbsp;L&nbsp;</span>'
     h += '</p>'
     h += '<span id="hideRanges" style="color:blue;cursor:hand;font-size:small">Advanced[+] </span>'
-    
     h += '<span id="advancedRanges" hidden=false>'
         h += '<p><span><input id="cancerRange" type="range" style="width:200px"> <button id="cancerRangePlay" style="background-color:lime">Cancer</button> <span id="cancerTiles"> counting ...</span></span>'
         h += '<br><input id="tilRange" type="range" style="width:200px"> <button id="tilRangePlay" style="background-color:lime">Lymph</button>  <span id="tilTiles">counting ...</span></p>'
@@ -304,7 +330,7 @@ tilmap.calcTILfun=function(){
     tilmap.calcTILdiv.innerHTML=h
     segVal.innerText=segmentationRange.value
     transVal.innerText=transparencyRange.value
-    hideRGBbuttons.onclick=function(){
+    /*hideRGBbuttons.onclick=function(){
         if(rgbButtons.hidden){
             rgbButtons.hidden=false
             hideRGBbuttons.textContent='RGB[-] '
@@ -315,7 +341,7 @@ tilmap.calcTILfun=function(){
             hideRGBbuttons.style.color="blue"
         }
         tilmap.canvasAlign()
-    }
+    }*/
     hideRanges.onclick=function(){
         if(advancedRanges.hidden){
             advancedRanges.hidden=false
@@ -388,6 +414,7 @@ tilmap.calcTILfun=function(){
         }
     }
     // read the image data
+
     tilmap.img = tilmap.div.querySelector('#imgTIL')
     tilmap.img.onload=function(){
         tilmap.cvBase=document.createElement('canvas');
@@ -408,10 +435,12 @@ tilmap.calcTILfun=function(){
         tilmap.imgDataB=tilmap.imSlice(2)
         //tilmap.imgDataB_count=tilmap.imgDataB.map(x=>x.map(x=>x/255)).map(x=>x.reduce((a,b)=>a+b)).reduce((a,b)=>a+b)
         tilmap.imgDataB_count=tilmap.imgDataB.map(x=>x.map(x=>(x>0))).map(x=>x.reduce((a,b)=>a+b)).reduce((a,b)=>a+b)
-        
-        title1 = document.createElement('p');
-        title1.innerHTML = '<p>Original</p>';
-        tilmap.img.parentElement.appendChild(title1)
+        //calcTILgreen.onclick=function(){tilmap.from2D(tilmap.imSlice(1))}
+        //calcTILred.onclick=function(){tilmap.from2D(tilmap.imSlice(0))}
+
+        title = document.createElement('p');
+        title.innerHTML = '<p>Original</p>';
+        tilmap.img.parentElement.appendChild(title);
 
         tilmap.cvBase=document.createElement('canvas');
         //tilmap.cvBase.onclick=tilmap.img.onclick
@@ -425,9 +454,11 @@ tilmap.calcTILfun=function(){
         tilmap.ctx=tilmap.cvBase.getContext('2d');
         tilmap.ctx.drawImage(this,0,0);
         tilmap.imgData=jmat.imread(tilmap.cvBase);
-        //calcTILred.onclick=function(){tilmap.from2D(tilmap.imSlice(0))}
         tilmap.from2D(tilmap.imSlice(0))
 
+        title0 = document.createElement('p');
+        title0.innerHTML = '<p>Lymph</p>';
+        tilmap.img.parentElement.appendChild(title0);
 
         tilmap.cvBase=document.createElement('canvas');
         //tilmap.cvBase.onclick=tilmap.img.onclick
@@ -441,9 +472,11 @@ tilmap.calcTILfun=function(){
         tilmap.ctx=tilmap.cvBase.getContext('2d');
         tilmap.ctx.drawImage(this,0,0);
         tilmap.imgData=jmat.imread(tilmap.cvBase);
-        //calcTILgreen.onclick=function(){tilmap.from2D(tilmap.imSlice(1))}
         tilmap.from2D(tilmap.imSlice(1))
 
+        title1 = document.createElement('p');
+        title1.innerHTML = '<p>Cancer</p>';
+        tilmap.img.parentElement.appendChild(title1);
 
 
         tilmap.cvBase=document.createElement('canvas');
@@ -458,8 +491,12 @@ tilmap.calcTILfun=function(){
         tilmap.ctx=tilmap.cvBase.getContext('2d');
         tilmap.ctx.drawImage(this,0,0);
         tilmap.imgData=jmat.imread(tilmap.cvBase);
-        //calcTILgreen.onclick=function(){tilmap.from2D(tilmap.imSlice(1))}
         tilmap.from2D(tilmap.imSlice(2))
+
+        title2 = document.createElement('p');
+        title2.innerHTML = '<p>Classification</p>';
+        tilmap.img.parentElement.appendChild(title2);
+        //calcTILblue.onclick=function(){tilmap.from2D(tilmap.imSlice(2))}
         
         calcTILblue.onclick=function(){
             let dd = tilmap.imSlice(2)
@@ -501,10 +538,10 @@ tilmap.calcTILfun=function(){
             })
             jmat.imwrite(tilmap.cvBase,ddd)
         }
-        calcTIL0.onclick=function(){
+        /*calcTIL0.onclick=function(){
             tilmap.img.hidden=false
             tilmap.cvBase.hidden=true
-        }
+        }*/
         //debugger
         tilmap.cvBase.onclick=tilmap.img.onclick
 
