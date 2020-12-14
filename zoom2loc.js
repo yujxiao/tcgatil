@@ -16,7 +16,7 @@ zoom2loc = function (event) {
 
     // Get image size
     let canvases = document.getElementsByTagName("img");
-    console.log(canvases)
+    //console.log(canvases)
     let imgDim = {};
     for (let i = 0; i < canvases.length; i++) {
         if (canvases[i].width > 0) {
@@ -100,7 +100,7 @@ zoom2loc = function (event) {
         if (obfuscatedId) {
             ifrm.src = `/viewer.html?slideId=${result[0]['_id']['$oid']}&states=${encodedData}`;
         } else {
-            ifrm.src = `${newIfrmLoc}&x=${Math.ceil(clickPos.x * scale.w)}&y=${Math.ceil(clickPos.y * scale.h)}&zoom=30`;
+            ifrm.src = `${newIfrmLoc}&x=${Math.ceil(clickPos.x * scale.w)}&y=${Math.ceil(clickPos.y * scale.h)}&zoom=20`;
         }
         console.log('ifrm.src:', ifrm.src);
 
