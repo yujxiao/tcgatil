@@ -15,7 +15,7 @@ zoom2loc = function (event) {
     //console.log("clickPos", clickPos);
 
     // Get image size
-    let canvases = document.getElementsByTagName("canvas");
+    let canvases = document.getElementsById("imgTIL");
     let imgDim = {};
     for (let i = 0; i < canvases.length; i++) {
         if (canvases[i].width > 0) {
