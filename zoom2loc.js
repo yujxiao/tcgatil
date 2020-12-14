@@ -10,8 +10,8 @@ zoom2loc = function (event) {
     let findapi = !obfuscatedId;
     // Get click position
     let clickPos = {};
-    clickPos.x = event.offsetX ? (event.offsetX) : event.pageX - document.getElementById("imgTILDiv").offsetLeft;
-    clickPos.y = event.offsetY ? (event.offsetY) : event.pageY - document.getElementById("imgTILDiv").offsetTop;
+    clickPos.x = event.offsetX ? (event.offsetX) : event.pageX - document.getElementById("imgTIL").offsetLeft;
+    clickPos.y = event.offsetY ? (event.offsetY) : event.pageY - document.getElementById("imgTIL").offsetTop;
     //console.log("clickPos", clickPos);
 
     // Get image size
