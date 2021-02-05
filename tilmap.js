@@ -89,14 +89,15 @@ tilmap.ui=function(div){
 
 
     tilmap.selTumorTissue.onchange=tilmap.showTIL
-    tilmap.selTumorType.onclick=tilmap.selTumorTissue.onclick=function(){
-        if(cancerRangePlay.style.backgroundColor=="orange"){
-            cancerRangePlay.click()
+    
+    //tilmap.selTumorType.onclick=tilmap.selTumorTissue.onclick=function(){
+      //  if(cancerRangePlay.style.backgroundColor=="orange"){
+        //    cancerRangePlay.click()
 
-        }
-        if(tilRangePlay.style.backgroundColor=="orange"){
-            tilRangePlay.click()
-        }
+    //    }
+    //    if(tilRangePlay.style.backgroundColor=="orange"){
+    //        tilRangePlay.click()
+    //    }
         // Micro.parentElement.removeChild(w)
         //debugger
     }
@@ -307,11 +308,12 @@ tilmap.zoom2loc=function(){ // event listener pointing to zoom2loc's code
     //tilmap.img.onclick=function(ev){
         if(typeof(zoom2loc)=="undefined"){
             var s=document.createElement('script')
-            if(location.pathname.match('tilmap')){
-                s.src="zoom2loc.js"
-            }else{
-                s.src="https://yujxiao.github.io/tcgatil/zoom2loc.js"  /*用于zoom的超链接，如果有需要，改到特定的网址即可*/
-            }
+            s.src="zoom2loc.js"
+            //if(location.pathname.match('tilmap')){
+            //   s.src="zoom2loc.js"
+            //}else{
+            //   s.src="https://yujiexiao.github.io/tcgatil/zoom2loc.js"  /*用于zoom的超链接，如果有需要，改到特定的网址即可*/
+            //}
             //s.src = "zoom2loc.js"
             
             s.onload=function(){zoom2loc(ev)}
