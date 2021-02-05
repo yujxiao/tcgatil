@@ -12,11 +12,10 @@ zoom2loc = function (event) {
     let clickPos = {};
     clickPos.x = event.offsetX ? (event.offsetX) : event.pageX - document.getElementById("imgTILDiv").offsetLeft;
     clickPos.y = event.offsetY ? (event.offsetY) : event.pageY - document.getElementById("imgTILDiv").offsetTop;
-    //console.log("clickPos", clickPos);
+    console.log("clickPos", clickPos);
 
     // Get image size
-    let canvases = document.getElementsByTagName("img");
-    //console.log(canvases)
+    let canvases = document.getElementsByName("imgTILDiv");
     let imgDim = {};
     for (let i = 0; i < canvases.length; i++) {
         if (canvases[i].width > 0) {
@@ -100,7 +99,7 @@ zoom2loc = function (event) {
         if (obfuscatedId) {
             ifrm.src = `/viewer.html?slideId=${result[0]['_id']['$oid']}&states=${encodedData}`;
         } else {
-            ifrm.src = `${newIfrmLoc}&x=${Math.ceil(clickPos.x * scale.w)}&y=${Math.ceil(clickPos.y * scale.h)}&zoom=20`;
+            ifrm.src = `${newIfrmLoc}&x=${Math.ceil(clickPos.x * scale.w)}&y=${Math.ceil(clickPos.y * scale.h)}&zoom=8`;
         }
         console.log('ifrm.src:', ifrm.src);
 
