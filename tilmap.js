@@ -100,7 +100,7 @@ tilmap.ui=function(div){
     //    }
         // Micro.parentElement.removeChild(w)
         //debugger
-    }
+    //}
     
     //setTimeout(tilmap.showTIL,3000)
     searchInput.onkeyup=searchInput.onclick=tilmap.search
